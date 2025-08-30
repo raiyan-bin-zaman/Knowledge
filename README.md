@@ -13,7 +13,7 @@ This repository is organized into several key areas:
 ### 1. Learning Systems
 Structured methodologies for acquiring new skills.  
 **Example:**  
-- **Cross-Language Learning System**: A framework for learning multiple programming languages by focusing on universal concepts instead of language-specific syntax.
+- <a href="./cross_laguage_learning.md">**Cross-Language Learning System**</a>: A framework for learning multiple programming languages by focusing on universal concepts instead of language-specific syntax.
 
 ### 2. Roadmaps
 Step-by-step guides for learning specific technologies or fields, from beginner to advanced levels.
