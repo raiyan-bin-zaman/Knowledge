@@ -1,4 +1,4 @@
-# 🧠 Knowledge
+#  Knowledge
 
 Welcome to my personal knowledge base! This repository is a curated collection of **learning systems**, **technical roadmaps**, and **conceptual notes** designed to promote deep and efficient learning.
 
@@ -6,7 +6,7 @@ The core philosophy here is **Concept over Syntax**. Instead of just memorizing 
 
 ---
 
-## 📂 What's Inside?
+##  What's Inside?
 
 This repository is organized into several key areas:
 
@@ -43,6 +43,6 @@ While this is a personal project, **suggestions and corrections are always welco
 
 ---
 
-## 📄 License
+##  License
 
 The content of this repository is licensed under the **MIT License**.
