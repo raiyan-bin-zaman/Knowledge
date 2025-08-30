@@ -26,7 +26,7 @@ A collection of useful code snippets, command-line tricks, and quick-reference n
 
 ---
 
-## 🚀 How to Use This Repo
+## How to Use This Repo
 
 - Browse the folders and files freely.  
 - If you’re starting a new learning journey, check out the **Roadmaps** section.  
@@ -36,7 +36,7 @@ Everything here is a **work in progress**. The goal is to create a **living libr
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 While this is a personal project, **suggestions and corrections are always welcome**!  
 - If you spot an error or have an idea for a new topic, feel free to **open an issue** or **submit a pull request**.
