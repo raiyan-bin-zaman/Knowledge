@@ -1,186 +1,259 @@
 #include <stdio.h>
 
-void greet(void);
-int e13_2(void);
-int temps_summary(int append_log);
-void count_marks(int mark, int *high, int *low);
-int c13_1(void);
-void add_one(int mark, int *total);
-int c13_2(void);
+void g14_1(void);  void e14_1(void);  void e14_2(void);
+void m14_1(void);  void m14_2(void);  void m14_3(void);
+void c14_1(void);  void c14_2(void);
 
-/* Menu: 1=E13.1  2=E13.2  3=M13.1/M13.3  4=M13.2  5=C13.1  6=C13.2 */
+void read_marks(int a[], int n);
+double average(const int a[], int n);
+void report(const int a[], int n);
+void bump(int *cellp);
+int doubled(int value);
+void print_array(const int a[], int n);
+int total(const int a[], int n);
+
 int main(void)
 {
-    int choice = 0;
+    int choice;
 
-    printf("1 E13.1  2 E13.2  3 M13.1/M13.3  4 M13.2  5 C13.1  6 C13.2\n");
+    printf("1 G14.1  2 E14.1  3 E14.2  4 M14.1\n");
+    printf("5 M14.2  6 M14.3  7 C14.1  8 C14.2\n");
     printf("Choose: ");
     scanf("%d", &choice);
 
     switch (choice) {
-    case 1:
-        //E13.1
-        greet();
-        greet();
-        greet();
-        greet();
-        break;
-    case 2:
-        return e13_2();
-    case 3:
-        return temps_summary(0);
-    case 4:
-        return temps_summary(1);
-    case 5:
-        return c13_1();
-    case 6:
-        return c13_2();
-    default:
-        printf("Invalid choice\n");
-        return 1;
+    case 1: g14_1(); break;
+    case 2: e14_1(); break;
+    case 3: e14_2(); break;
+    case 4: m14_1(); break;
+    case 5: m14_2(); break;
+    case 6: m14_3(); break;
+    case 7: c14_1(); break;
+    case 8: c14_2(); break;
+    default: printf("No such task\n");
     }
     return 0;
 }
 
-//E13.1
-void greet(void)
+//G14.1
+#define SIZE 6
+void g14_1(void)
 {
-    static int calls = 0;
+    int marks[SIZE];
+    int i, small;
 
-    calls = calls + 1;
-    printf("Hello %d\n", calls);
+    printf("Enter %d marks: ", SIZE);
+    for (i = 0; i < SIZE; i++)
+        scanf("%d", &marks[i]);
+
+    small = marks[0];
+    for (i = 1; i < SIZE; i++)
+        if (marks[i] < small) small = marks[i];
+    printf("smallest %d\n", small);
 }
+#undef SIZE
 
-//E13.2
-int e13_2(void)
+//E14.1
+#define SIZE 6
+void e14_1(void)
 {
-    FILE *outp;
-    int n, section = 7;
+    int a[SIZE];
+    int i;
 
-    printf("Enter N (digits 4 to 7 of your ID): ");
+    printf("Enter %d integers: ", SIZE);
+    for (i = 0; i < SIZE; i++)
+        scanf("%d", &a[i]);
+
+    for (i = 0; i < SIZE; i++)
+        printf("%d ", a[i]);
+    printf("\n");
+
+    for (i = SIZE - 1; i >= 0; i--)
+        printf("%d ", a[i]);
+    printf("\n");
+}
+#undef SIZE
+
+//E14.2
+#define SIZE 4
+void e14_2(void)
+{
+    int digit[SIZE];
+    int n, i, sum = 0;
+
+    printf("Enter your N (digits 4 to 7 of your ID): ");
     scanf("%d", &n);
 
-    outp = fopen("id.txt", "w");
-    if (outp == NULL) {
-        printf("Cannot open id.txt\n");
-        return 1;
+    for (i = SIZE - 1; i >= 0; i--) {
+        digit[i] = n % 10;
+        n = n / 10;
     }
-    fprintf(outp, "%04d\n", n);
-    fprintf(outp, "%d\n", section);
-    fclose(outp);
-    return 0;
+
+    for (i = 0; i < SIZE; i++) {
+        printf("%d ", digit[i]);
+        sum = sum + digit[i];
+    }
+    printf("\nsum of digits %d\n", sum);
+}
+#undef SIZE
+
+//M14.1
+/* Two passes: the average is unknown until every mark has been read,
+   so the marks must be kept to compare against it afterwards. */
+#define SIZE 8
+void m14_1(void)
+{
+    int marks[SIZE];
+    int i, sum = 0;
+    double avg;
+
+    printf("Enter %d marks: ", SIZE);
+    for (i = 0; i < SIZE; i++) {
+        scanf("%d", &marks[i]);
+        sum = sum + marks[i];
+    }
+    avg = (double) sum / SIZE;
+    printf("average %.2f\n", avg);
+
+    for (i = 0; i < SIZE; i++) {
+        if (marks[i] > avg)
+            printf("%d ABOVE\n", marks[i]);
+        else
+            printf("%d BELOW\n", marks[i]);
+    }
 }
 
-//M13.1 (append_log = 0), M13.2 (append_log = 1), M13.3 (NULL checks)
-int temps_summary(int append_log)
+//M14.2
+void m14_2(void)
 {
-    FILE *inp, *outp, *logp;
-    double t, total = 0.0, largest = 0.0, average = 0.0;
-    int count = 0;
+    int marks[SIZE];
 
-    inp = fopen("temps.txt", "r");
-    if (inp == NULL) {                       //M13.3
-        printf("Cannot open temps.txt\n");
-        return 1;
+    read_marks(marks, SIZE);
+    report(marks, SIZE);
+}
+#undef SIZE
+
+void read_marks(int a[], int n)
+{
+    int i;
+
+    printf("Enter %d marks: ", n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+}
+
+double average(const int a[], int n)
+{
+    int i, s = 0;
+
+    for (i = 0; i < n; i++)
+        s = s + a[i];
+    return (double) s / n;
+}
+
+void report(const int a[], int n)
+{
+    int i;
+    double avg = average(a, n);
+
+    printf("average %.2f\n", avg);
+    for (i = 0; i < n; i++) {
+        if (a[i] > avg)
+            printf("%d ABOVE\n", a[i]);
+        else
+            printf("%d BELOW\n", a[i]);
+    }
+}
+
+//M14.3
+/* sizeof is fixed at compile time: it is the capacity, not the count. */
+#define SIZE 20
+void m14_3(void)
+{
+    int marks[SIZE];
+    int count = 0, value, i, sum = 0;
+
+    printf("Enter marks (negative to stop, max %d): ", SIZE);
+    while (count < SIZE && scanf("%d", &value) == 1 && value >= 0) {
+        marks[count] = value;
+        count++;
     }
 
-    while (fscanf(inp, "%lf", &t) != EOF) {  //M13.1
-        total = total + t;
-        count = count + 1;
-        if (count == 1 || t > largest)
-            largest = t;
-    }
-    fclose(inp);
+    for (i = 0; i < count; i++)
+        sum = sum + marks[i];
 
+    printf("count %d\n", count);
     if (count > 0)
-        average = total / count;
-
-    outp = fopen("summary.txt", "w");
-    if (outp == NULL) {
-        printf("Cannot open summary.txt\n");
-        return 1;
-    }
-    fprintf(outp, "count %d\n", count);
-    fprintf(outp, "total %.2f\n", total);
-    fprintf(outp, "average %.2f\n", average);
-    fprintf(outp, "largest %.2f\n", largest);
-    fclose(outp);
-
-    if (append_log) {                        //M13.2
-        logp = fopen("log.txt", "a");
-        if (logp == NULL) {
-            printf("Cannot open log.txt\n");
-            return 1;
-        }
-        fprintf(logp, "count %d total %.2f average %.2f largest %.2f\n",
-                count, total, average, largest);
-        fclose(logp);
-    }
-
-    printf("count %d\ntotal %.2f\naverage %.2f\nlargest %.2f\n",
-           count, total, average, largest);
-    return 0;
+        printf("average %.2f\n", (double) sum / count);
+    else
+        printf("average undefined (no marks)\n");
+    printf("sizeof array %d bytes\n", (int) sizeof(marks));
 }
+#undef SIZE
 
-//C13.1
-void count_marks(int mark, int *high, int *low)
+//C14.1
+/* bump got the address of the cell, so *cellp is the caller's cell.
+   doubled got a copy of the value, so the cell is untouched. */
+#define SIZE 5
+void bump(int *cellp)
 {
-    static int hi = 0;
-    static int lo = 0;
-
-    if (mark >= 80)
-        hi = hi + 1;
-    if (mark < 40)
-        lo = lo + 1;
-
-    *high = hi;
-    *low = lo;
+    *cellp = *cellp + 1;
 }
 
-int c13_1(void)
+int doubled(int value)
 {
-    FILE *inp;
-    int mark, high = 0, low = 0;
-
-    inp = fopen("marks.txt", "r");
-    if (inp == NULL) {
-        printf("Cannot open marks.txt\n");
-        return 1;
-    }
-    while (fscanf(inp, "%d", &mark) != EOF)
-        count_marks(mark, &high, &low);
-    fclose(inp);
-
-    printf("80 or above %d\n", high);
-    printf("below 40 %d\n", low);
-    return 0;
+    return 2 * value;
 }
 
-//C13.2 (fixed version; the global is replaced by an output parameter)
-void add_one(int mark, int *total)
+void print_array(const int a[], int n)
 {
-    *total = *total + mark;
+    int i;
+
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+    printf("\n");
 }
 
-int c13_2(void)
+void c14_1(void)
 {
-    FILE *inp;
-    int mark = 0;
-    int count = 0;
-    int total = 0;
+    int a[SIZE] = {10, 20, 30, 40, 50};
 
-    inp = fopen("marks.txt", "r");
-    if (inp == NULL) {
-        printf("Cannot open marks.txt\n");
-        return 1;
-    }
+    printf("start: ");
+    print_array(a, SIZE);
 
-    while (fscanf(inp, "%d", &mark) != EOF) {
-        add_one(mark, &total);
-        count = count + 1;
-    }
+    bump(&a[2]);
+    printf("after bump(&a[2]): ");
+    print_array(a, SIZE);
 
-    fclose(inp);
-    printf("count %d total %d\n", count, total);
-    return 0;
+    printf("doubled(a[2]) returns %d\n", doubled(a[2]));
+    printf("after doubled(a[2]): ");
+    print_array(a, SIZE);
 }
+#undef SIZE
+
+//C14.2
+/* Faults fixed: total(values) -> total(values, SIZE) [build stopped];
+   loop 1..SIZE -> 0..SIZE-1 [nothing]; a[0] = 0 removed [nothing];
+   const added to the parameter [would stop the build if a[0] = 0 stayed]. */
+#define SIZE 5
+int total(const int a[], int n)
+{
+    int i, s = 0;
+
+    for (i = 0; i < n; i++)
+        s = s + a[i];
+    return s;
+}
+
+void c14_2(void)
+{
+    int values[SIZE] = {10, 20, 30, 40, 50};
+    int i;
+
+    for (i = 0; i < SIZE; i++)
+        printf("%d ", values[i]);
+    printf("\n");
+
+    printf("total %d\n", total(values, SIZE));
+}
+#undef SIZE
